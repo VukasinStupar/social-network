@@ -19,6 +19,6 @@ public interface UserService {
 
      Long getPostNumber7Days(Long userId);
 
-
+    User setLastLogin(Long userId);
 
 }
