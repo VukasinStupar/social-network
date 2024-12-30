@@ -44,14 +44,15 @@ public class GroupChatServiceImpl implements GroupChatService {
         GroupChat groupChat = new GroupChat();
         groupChat.setAdmin(loggedUser);
         groupChat.setCreateTime(LocalDateTime.now());
+        groupChat = groupChatRepository.save(groupChat);
 
         GroupUser groupUser = new GroupUser();
         groupUser.setUser(loggedUser);
         groupUser.setGroup(groupChat);
         groupUser.setAddedAt(LocalDateTime.now());
+
         groupUserRepository.save(groupUser);
 
-        groupChatRepository.save(groupChat);
         return groupChat;
     }
 
@@ -71,11 +72,11 @@ public class GroupChatServiceImpl implements GroupChatService {
         if(user == null){
             return null;
         }
+
         GroupUser foundGroupUser = groupUserRepository.findByUserIdGroupId(newUserId, groupChatId);
         if(foundGroupUser != null){
             return null;
         }
-
 
         GroupUser groupUser = new GroupUser();
         groupUser.setUser(user);
@@ -149,7 +150,6 @@ public class GroupChatServiceImpl implements GroupChatService {
         groupMessages.addAll(groupMessagesBefore);
         groupMessages.addAll(groupMessagesAfter);
 
-
         return groupMessages;
     }
 
@@ -165,13 +165,12 @@ public class GroupChatServiceImpl implements GroupChatService {
 
         return groupMessages;
    }
-   //pageable da se ubaci u citanje ceta
+
+   //pageable da se ubaci u citanje ceta, necemo za sad imati
     public Page<GroupMessage> getPaginatedGroupMessages(Long groupId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return groupMessageRepository.groupMessageGroup(groupId, pageable);
     }
-
-
 
     @Override
     public List<GroupUser> allGroupUser(Long userId) {

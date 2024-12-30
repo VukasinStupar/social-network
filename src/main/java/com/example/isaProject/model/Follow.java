@@ -29,6 +29,4 @@ public class Follow {
 
     @Column(name = "follow_creation", nullable = false)
     private LocalDateTime followCreation;
-
-
 }

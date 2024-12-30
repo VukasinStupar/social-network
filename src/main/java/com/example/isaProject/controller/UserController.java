@@ -1,9 +1,16 @@
 package com.example.isaProject.controller;
 
+import com.example.isaProject.dto.PostDto;
+import com.example.isaProject.dto.UserDisplayDto;
 import com.example.isaProject.dto.UserDto;
+import com.example.isaProject.dto.UserSearchDto;
 import com.example.isaProject.model.User;
+import com.example.isaProject.securityAuth.TokenBasedAuthentication;
 import com.example.isaProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +70,30 @@ public class UserController {
 
     }
 
+    @PostMapping("/send-notifications")
+    public ResponseEntity<String> sendNotificationsToInactiveUsers() {
+        try {
+            userService.sendNotificationsToInactiveUsers();
+            return ResponseEntity.ok("Notifications sent to inactive users successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to send notifications: " + e.getMessage());
+        }
 
+    }
+
+
+    @GetMapping("/findUsersByAttributes")
+    public ResponseEntity<List<UserDisplayDto>> findUsersByAttributes(@RequestBody UserSearchDto userSearchDto) {
+
+
+        List<UserDisplayDto> dtos = userService.findUsersByAttributes(userSearchDto);
+
+        if (dtos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
 
 
 }

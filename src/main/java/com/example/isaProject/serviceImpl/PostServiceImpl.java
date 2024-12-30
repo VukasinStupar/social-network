@@ -1,23 +1,28 @@
 package com.example.isaProject.serviceImpl;
 
+import com.example.isaProject.dto.CommentDto;
+import com.example.isaProject.dto.PostDetailsDto;
 import com.example.isaProject.dto.PostDto;
 import com.example.isaProject.dto.TrendingDto;
+import com.example.isaProject.model.Comment;
 import com.example.isaProject.model.Post;
 import com.example.isaProject.model.User;
+import com.example.isaProject.repository.CommentRepository;
 import com.example.isaProject.repository.PostRepository;
-import com.example.isaProject.repository.RoleRepository;
 import com.example.isaProject.repository.UserRepository;
 import com.example.isaProject.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+
+
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.*;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -26,6 +31,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
 
 
@@ -46,12 +54,18 @@ public class PostServiceImpl implements PostService {
         return post;
     }
 
-    public List<Post> displayPostByUser(Long userId){
+    public List<Post> displayPostByUser(Long userId) {
         return postRepository.findAllByUserSortData(userId);
-
     }
-    public List<Post> displayAllPostsDesc() {
-        return postRepository.findAllPostsSortedDesc();
+
+
+
+
+
+    @Override
+    public List<Post> displayAllPostsDesc(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findAllPostsSortedDesc(pageable);
     }
 
     public List<Post> allTrends() {
@@ -69,12 +83,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> findTop5MostLiked(){
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
-
         List<Post> post = postRepository.findTop5MostLikedLast7Days(sevenDaysAgo);
-
         return post;
     }
-
     @Override
     public List<Post> findTop10PostsAllTime() {
         List<Post> post = postRepository.findTop10PostsAllTime();
@@ -94,8 +105,23 @@ public class PostServiceImpl implements PostService {
         trendingDto.setTenMostPopularAllTime(tenMostPopularAllTimeDto);
 
         return trendingDto;
-
     }
 
+    @Override
+    public List<PostDetailsDto> displayDetailedPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Post> posts = postRepository.findAllPostsSortedDesc(pageable);
+
+        List<PostDetailsDto> detailedPosts = new ArrayList<>();
+
+        for(Post post : posts){
+            List<Comment> comments = commentRepository.commentByPost(post.getId());
+            List<CommentDto> commentDto = CommentDto.convertListToDto(comments);
+
+            PostDetailsDto postDetailsDto = new PostDetailsDto(post, commentDto);
+            detailedPosts.add(postDetailsDto);
+        }
+        return detailedPosts;
+    }
 
 }

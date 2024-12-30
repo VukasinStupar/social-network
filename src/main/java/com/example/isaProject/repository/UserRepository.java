@@ -2,6 +2,7 @@ package com.example.isaProject.repository;
 
 import com.example.isaProject.model.Post;
 import com.example.isaProject.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,19 +15,33 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserByName(String name);
 
-    @Query("SELECT COUNT(p) FROM Post p WHERE p.user.id = :userId AND p.creationDate >= :sevenDaysAgo")
-    Long numberOfPostsLast7Days(@Param("userId") Long userId, @Param("sevenDaysAgo") LocalDateTime sevenDaysAgo);
+
+    @Query("SELECT COUNT(p) FROM Post p WHERE p.user.id = :userId AND p.createdAt >= :fromDate")
+    Long numberOfPostsLast7Days(@Param("userId") Long userId, @Param("fromDate") LocalDateTime fromDate);
+
 
     @Query("SELECT u FROM User u WHERE u.lastPasswordResetDate <= :sevenDays")
     List<User> findUsersWithLastLoginBefore(@Param("sevenDays") LocalDateTime sevenDays);
 
+    @Query("SELECT u FROM User u WHERE u.lastLogin IS NULL OR u.lastLogin <= :sevenDays")
+    List<User> findUsersLogged7DaysAgo(@Param("sevenDays") LocalDateTime sevenDays);
+
+    //@Query("SELECT u FROM User u, Post p, Follow f, WHERE u.name =: name or u.surname =:surname or u.email =: email or p.user.username =: username or f.follower.username =: username")
+    //List<User> registredUsers(@Param("name") String name, @Param("surname") String surname, @Param("email") String userEmail, @Param("username") String username);
 
 
-
-
-
-
-
-
+    @Query("SELECT u " +
+            "FROM User u " +
+            "LEFT JOIN Post p ON p.user.id = u.id " +
+            "LEFT JOIN Follow f ON f.followee.id = u.id " +
+            "WHERE (:name IS NULL OR u.name LIKE CONCAT('%', :name, '%')) " +
+            "AND (:surname IS NULL OR u.surname LIKE CONCAT('%', :surname, '%')) " +
+            "AND (:email IS NULL OR u.email LIKE CONCAT('%', :email, '%')) " +
+            "AND (:username IS NULL OR u.username LIKE CONCAT('%', :username, '%'))")
+    List<User> registredUsers(@Param("name") String name,
+                              @Param("surname") String surname,
+                              @Param("email") String email,
+                              @Param("username") String username,
+                              Pageable pageable);
 
 }

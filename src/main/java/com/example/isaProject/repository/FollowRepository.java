@@ -40,4 +40,18 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     @Query("SELECT COUNT(f) FROM Follow f WHERE f.followee.id = :userId AND f.followCreation >= :sevenDaysAgo")
     long countNewFollowersInLast7Days(@Param("userId") Long userId, @Param("sevenDaysAgo") LocalDateTime sevenDaysAgo);
+
+  /*  @Query("SELECT p.user.id FROM Post p " + "WHERE p.user.id = :userId " + "GROUP BY p.user.id " + "HAVING COUNT(p) BETWEEN :from AND :to")
+    Long countFolloweeForUser(@Param("userId") Long userId, @Param("from") Long from,@Param("to") Long to);
+*/
+  @Query("SELECT p.user.id " +
+          "FROM Post p " +
+          "WHERE p.user.id = :userId " +
+          "GROUP BY p.user.id " +
+          "HAVING (:from IS NULL OR COUNT(p) >= :from) AND (:to IS NULL OR COUNT(p) <= :to)")
+  Long countFolloweeForUser(@Param("userId") Long userId,
+                            @Param("from") Long from,
+                            @Param("to") Long to);
+
+
 }

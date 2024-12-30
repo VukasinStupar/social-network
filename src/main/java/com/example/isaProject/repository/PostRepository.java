@@ -1,15 +1,13 @@
 package com.example.isaProject.repository;
 
 import com.example.isaProject.model.Post;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.data.repository.query.Param;
 
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -18,7 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByUserSortData(@Param("userId") Long userId);
 
     @Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")
-    List<Post> findAllPostsSortedDesc();
+    List<Post> findAllPostsSortedDesc(Pageable pageable);
 
 
     @Query("SELECT COUNT(p) FROM Post p")
@@ -42,8 +40,25 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT SUM(p.likes) FROM Post p WHERE p.user.id = :userId")
     Long countLikesByUser(@Param("userId") Long userId);
 
-    //@Query("SELECT p FROM Post p ORDER BY p.likes DESC")
-    //List<Post> findTop10PostsAllTime(Pageable pageable);
+   /* @Query("SELECT COALESCE(COUNT(p), 0) " +
+            "FROM Post p " +
+            "WHERE p.user.id = :userId " +
+            "GROUP BY p.user.id " +
+            "HAVING COUNT(p) BETWEEN :from AND :to")
+    Long countPostsForUser(@Param("userId") Long userId,
+                           @Param("from") Long from,
+                           @Param("to") Long to);
+*/
+   @Query("SELECT COALESCE(COUNT(p), 0) " +
+           "FROM Post p " +
+           "WHERE p.user.id = :userId " +
+           "GROUP BY p.user.id " +
+           "HAVING (:from IS NULL OR COUNT(p) >= :from) " +
+           "AND (:to IS NULL OR COUNT(p) <= :to)")
+   Long countPostsForUser(@Param("userId") Long userId,
+                          @Param("from") Long from,
+                          @Param("to") Long to);
+
 
 
 

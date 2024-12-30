@@ -31,6 +31,24 @@ public class EmailServiceImpl {
         javaMailSender.send(mail);
     }
 
+    public void sendWeeklyNotification(User user, Long postCount, Long followerCount) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(user.getEmail());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("Your Weekly Summary");
+
+        String text = String.format(
+                "Hello %s,\n\nHere is your summary for the last 7 days:\n" +
+                        "- New Posts: %d\n" +
+                        "- New Followers: %d\n\n" +
+                        "Stay active and enjoy using the app!",
+                user.getName(), postCount, followerCount
+        );
+
+        mail.setText(text);
+        javaMailSender.send(mail);
+    }
+
 
 
 }

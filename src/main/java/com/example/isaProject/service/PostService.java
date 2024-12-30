@@ -1,5 +1,6 @@
 package com.example.isaProject.service;
 
+import com.example.isaProject.dto.PostDetailsDto;
 import com.example.isaProject.dto.PostDto;
 import com.example.isaProject.dto.TrendingDto;
 import com.example.isaProject.model.Post;
@@ -16,9 +17,8 @@ public interface PostService {
 
     public List<Post> displayPostByUser(Long userId);
 
-    public List<Post> displayAllPostsDesc();
 
-
+    List<Post> displayAllPostsDesc(int page, int size);
 
     public List<Post> allTrends();
 
@@ -31,4 +31,8 @@ public interface PostService {
     List<Post> findTop10PostsAllTime();
 
     public TrendingDto getAppTrending();
+
+    List<PostDetailsDto> displayDetailedPosts(int page, int size);
+
+
 }

@@ -22,7 +22,6 @@ public class GroupUser {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_chat_id", nullable = false)
     private GroupChat group;

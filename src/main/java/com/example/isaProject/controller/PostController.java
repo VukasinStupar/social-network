@@ -1,5 +1,6 @@
 package com.example.isaProject.controller;
 
+import com.example.isaProject.dto.PostDetailsDto;
 import com.example.isaProject.dto.PostDto;
 import com.example.isaProject.dto.TrendingDto;
 import com.example.isaProject.model.Post;
@@ -53,18 +54,11 @@ public class PostController {
         return new ResponseEntity<ArrayList<PostDto>>(postDto, HttpStatus.OK);
     }
 
-    @GetMapping("displayAllPostByDesc")
-    public ResponseEntity<ArrayList<PostDto>> displayAllPostByDesc(){
-        List<Post> posts = postService.displayAllPostsDesc();
-        if(posts == null){
-            return new ResponseEntity<ArrayList<PostDto>>(HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping("displayAllPost")
+    public ResponseEntity<List<PostDetailsDto>> displayAllPostByDesc(int page, int size){
+        List<PostDetailsDto> posts = postService.displayDetailedPosts(page, size);
 
-        ArrayList<PostDto> postDto = new ArrayList<PostDto>();
-        for(Post post : posts){
-            postDto.add(new PostDto(post));
-        }
-        return new ResponseEntity<ArrayList<PostDto>>(postDto, HttpStatus.OK);
+        return new ResponseEntity<List<PostDetailsDto>>(posts, HttpStatus.OK);
     }
 
     public ResponseEntity<TrendingDto> getTrending(){
@@ -72,8 +66,4 @@ public class PostController {
         return new ResponseEntity<TrendingDto>(trendingDto, HttpStatus.OK);
 
     }
-
-
-
-
 }

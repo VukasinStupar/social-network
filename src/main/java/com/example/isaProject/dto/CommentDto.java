@@ -10,6 +10,9 @@ import lombok.Setter;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,5 +34,23 @@ public class CommentDto {
         this.postId= comment.getPost().getId();
         this.text= comment.getText();
         this.commentCreation= comment.getCommentCreation();
+    }
+
+    public static List<CommentDto> convertListToDto(List<Comment> comments){
+        List<CommentDto> dtos = new ArrayList<>();
+        for(Comment comment : comments){
+            dtos.add(new CommentDto(comment));
+        }
+        return dtos;
+    }
+
+
+
+    public Comment mapTo(){
+        Comment comment = new Comment();
+        comment.getUser().setId(userId);
+        comment.getPost().setId(postId);
+        comment.setText(text);
+        return comment;
     }
 }
