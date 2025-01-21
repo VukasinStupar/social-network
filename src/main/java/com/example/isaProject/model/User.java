@@ -53,6 +53,15 @@ public class User implements UserDetails {
     @Column(name = "last_login", nullable = true)
     private LocalDateTime lastLogin;
 
+    @Column(name = "number_of_posts")
+    private int numberOfPosts;
+
+    @Column(name = "number_of_followers")
+    private int numberOfFollowers;
+
+    @Column(name = "number_of_followees")
+    private int numberOfFollowees;
+
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -60,6 +69,8 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns =
     @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
+
+
 
 
 

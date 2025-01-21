@@ -1,9 +1,6 @@
 package com.example.isaProject.serviceImpl;
 
-import com.example.isaProject.dto.CommentDto;
-import com.example.isaProject.dto.PostDetailsDto;
-import com.example.isaProject.dto.PostDto;
-import com.example.isaProject.dto.TrendingDto;
+import com.example.isaProject.dto.*;
 import com.example.isaProject.model.Comment;
 import com.example.isaProject.model.Post;
 import com.example.isaProject.model.User;
@@ -16,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,6 +48,10 @@ public class PostServiceImpl implements PostService {
         post.setUser(user);
         post.setCreatedAt(LocalDateTime.now());
 
+        user.setNumberOfPosts(user.getNumberOfPosts() +1);
+
+
+        userRepository.save(user);
         postRepository.save(post);
 
         return post;
@@ -123,5 +126,33 @@ public class PostServiceImpl implements PostService {
         }
         return detailedPosts;
     }
+
+    public Post update(Long id, PostDto updateRequest){
+        Post post = postRepository.findPostById(id);
+
+        if(post == null){
+            return null;
+        }
+
+        post.setDescription(updateRequest.getDescription());
+        post.setBunnyImage(updateRequest.getBunnyImage());
+
+        postRepository.save(post);
+        return post;
+    }
+
+    public Post deletePost(Long id){
+        Post post = postRepository.findPostById(id);
+
+        if(post == null){
+            return null;
+        }
+
+        postRepository.delete(post);
+        return post;
+
+    }
+
+
 
 }

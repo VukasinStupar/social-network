@@ -40,6 +40,7 @@ public class PostController {
         return new ResponseEntity<PostDto>(dto, HttpStatus.OK);
 
     }
+
     @GetMapping("displayUserPosts/{userId}")
     public ResponseEntity<ArrayList<PostDto>> displayUserPosts(@PathVariable Long userId){
         List<Post> posts = postService.displayPostByUser(userId);
@@ -66,4 +67,30 @@ public class PostController {
         return new ResponseEntity<TrendingDto>(trendingDto, HttpStatus.OK);
 
     }
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostDto> modifyPost(@PathVariable Long postId, @RequestBody PostDto updateRequest) {
+
+        Post post = postService.update(postId, updateRequest);
+
+        if (post == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        PostDto dto = new PostDto(post);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Post> deletePost(@PathVariable Long postId) {
+
+        Post post = postService.deletePost(postId);
+
+        if (post == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(post, HttpStatus.OK);
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.isaProject.controller;
 
+import com.example.isaProject.dto.ApplicationAnalyticsDTO;
 import com.example.isaProject.dto.CommentDto;
 import com.example.isaProject.dto.FollowDto;
 import com.example.isaProject.model.Comment;
@@ -33,4 +34,17 @@ public class CommentController {
         CommentDto dto = new CommentDto(comment);
         return new ResponseEntity<CommentDto>(dto, HttpStatus.OK);
     }
+//domaci
+    @GetMapping("ApplicationAnalytics")
+    public ResponseEntity<ApplicationAnalyticsDTO>ApplicationAnalytics(){
+        ApplicationAnalyticsDTO newAppAnalystics = commentService.ApplicationAnalytics();
+
+        if(newAppAnalystics == null){
+            return new ResponseEntity<ApplicationAnalyticsDTO>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<ApplicationAnalyticsDTO>(newAppAnalystics, HttpStatus.OK);
+    }
 }
+
+

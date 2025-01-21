@@ -1,11 +1,13 @@
 package com.example.isaProject.controller;
 
 import com.example.isaProject.dto.LoginDto;
+import com.example.isaProject.dto.UserDto;
 import com.example.isaProject.dto.UserRequest;
 import com.example.isaProject.dto.UserTokenState;
 import com.example.isaProject.exception.ResourceConflictException;
 import com.example.isaProject.model.User;
 import com.example.isaProject.service.UserService;
+import com.example.isaProject.serviceImpl.EmailServiceImpl;
 import com.example.isaProject.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,6 +35,9 @@ public class AuthenticationController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailServiceImpl emailServiceImpl;
 
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
@@ -65,15 +68,43 @@ public class AuthenticationController {
         return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
     }
 
+
     // Endpoint za registraciju novog korisnika
     @PostMapping("/signup")
     public ResponseEntity<User> addUser(@RequestBody UserRequest userRequest) {
+
         User existUser = this.userService.findByUsername(userRequest.getUsername());
 
         if (existUser != null) {
             throw new ResourceConflictException(userRequest.getId(), "Username already exists");
         }
-        User newUser = this.userService.save(userRequest);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        User newUser = new User();
+        newUser.setUsername(userRequest.getUsername());
+        newUser.setPassword(userRequest.getPassword());
+        newUser.setEmail(userRequest.getEmail());
+        newUser.setName(userRequest.getName());
+        newUser.setSurname(userRequest.getSurname());
+        newUser.setEnabled(false);
+
+        String activationToken = UUID.randomUUID().toString();
+        String activationLink = "http://localhost:8080/auth/activate?token=" + activationToken;
+
+        emailServiceImpl.sendActivationCodeAndLink(newUser, activationToken);
+
+       userService.save(newUser);
+
+        return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
+
+    @GetMapping("/auth/activate")
+    public ResponseEntity<String> activateAccount(@RequestParam("token") String token) {
+        boolean isActivated = userService.activateUser(token);
+
+        if (isActivated) {
+            return ResponseEntity.ok("Account activated successfully!");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid or expired token!");
+        }
+    }
+
 }

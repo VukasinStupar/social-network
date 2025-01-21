@@ -89,9 +89,6 @@ public class UserController {
 
         List<UserDisplayDto> dtos = userService.findUsersByAttributes(userSearchDto);
 
-        if (dtos.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 

@@ -34,5 +34,9 @@ public interface PostService {
 
     List<PostDetailsDto> displayDetailedPosts(int page, int size);
 
+    public Post update(Long id, PostDto updateRequest);
+
+    public Post deletePost(Long id);
+
 
 }

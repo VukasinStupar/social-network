@@ -24,22 +24,25 @@ public class UserSearchDto {
     private Long followFrom;
     private Long followTo;
 
-    private int pageFrom;
-    private int pageTo;
+    private String sortParam;
 
-    public UserSearchDto(User user, Long postFrom, Long postTo, Long followFrom, Long followTo, int pageFrom, int pageTo){
+    private int page;
+    private int size;
+
+    public UserSearchDto(User user, Long postFrom, Long postTo, Long followFrom, Long followTo, int page, int size, String sortParam){
         this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
         this.email = user.getEmail();
         this.userName = user.getUsername();
 
-        this.pageFrom = pageFrom;
-        this.pageTo = pageTo;
+        this.page = page;
+        this.size = size;
         this.followFrom = followFrom;
         this.followTo = followTo;
         this.postFrom = postFrom;
         this.postTo = postTo;
+        this.sortParam = sortParam;
     }
 
 

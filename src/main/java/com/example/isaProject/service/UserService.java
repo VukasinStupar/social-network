@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserService {
+
     User findByUsername(String name);
 
     List<User> findAll();
@@ -20,6 +21,8 @@ public interface UserService {
 
     User save(UserRequest userRequest);
 
+    User save(User user);
+
      Long getPostNumber7Days(Long userId);
 
     User setLastLogin(Long userId);
@@ -27,6 +30,8 @@ public interface UserService {
     void sendNotificationsToInactiveUsers();
 
 
-    public List<UserDisplayDto> findUsersByAttributes(UserSearchDto userSearchDto);
+    List<UserDisplayDto> findUsersByAttributes(UserSearchDto userSearchDto);
+
+    boolean activateUser(String token);
 
 }

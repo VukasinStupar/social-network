@@ -11,6 +11,7 @@ import com.example.isaProject.repository.PostRepository;
 import com.example.isaProject.repository.UserRepository;
 import com.example.isaProject.service.RoleService;
 import com.example.isaProject.service.UserService;
+import com.example.isaProject.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +47,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PostRepository postRepository;
 
+    private TokenUtils tokenUtils;
+
+
+
 
     @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
@@ -74,10 +79,13 @@ public class UserServiceImpl implements UserService {
         List<Role> roles = roleService.findByName("ROLE_USER");
         u.setRoles(roles);
 
-        //emailServiceImpl.sendActivationCode(u);
-
         return this.userRepository.save(u);
 
+    }
+
+    @Override
+    public User save(User user) {
+        return null;
     }
 
     @Override
@@ -146,30 +154,47 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDisplayDto> findUsersByAttributes(UserSearchDto userSearchDto) {
-        int pageFrom = userSearchDto.getPageFrom();
-        int pageTo = userSearchDto.getPageTo() ;
+        int page = userSearchDto.getPage();
+        int size = userSearchDto.getSize();
 
-        Pageable pageable = PageRequest.of(pageFrom, pageTo);
+        Pageable pageable = PageRequest.of(page, size);
 
-        List<User> users = userRepository.registredUsers(userSearchDto.getName(), userSearchDto.getSurname(),userSearchDto.getEmail(),
-                                                     userSearchDto.getUserName(), pageable);
-        if (users.isEmpty()) {
-            return null;
-        }
+        List<User> users = userRepository.searchUsers(userSearchDto.getName(), userSearchDto.getSurname(),
+                userSearchDto.getEmail(), userSearchDto.getPostFrom(), userSearchDto.getPostTo(),
+                userSearchDto.getSortParam(), pageable);
+
 
         List<UserDisplayDto> userDisplayDtos = new ArrayList<>();
 
         for (User us : users) {
-            Long countPostsForUser = postRepository.countPostsForUser(us.getId(), userSearchDto.getPostFrom(), userSearchDto.getPostTo());
-            Long countFolloweeForUser = followRepository.countFolloweeForUser(us.getId(), userSearchDto.getFollowFrom(), userSearchDto.getFollowTo());
 
-            UserDisplayDto udDto = new UserDisplayDto(us, countPostsForUser, countFolloweeForUser);
+            UserDisplayDto udDto = new UserDisplayDto(us);
             userDisplayDtos.add(udDto);
         }
-
-
         return userDisplayDtos;
     }
 
+    @Override
+    public boolean activateUser(String token) {
+
+        String username = tokenUtils.getUsernameFromToken(token);
+
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            return false;
+        }
+
+        if (!tokenUtils.validateToken(token, user)) {
+            throw new IllegalArgumentException("Invalid or expired token");
+        }
+
+        if (user.isEnabled()) {
+            throw new IllegalStateException("User is already activated");
+        }
+        user.setEnabled(true);
+
+        userRepository.save(user);
+        return true;
+    }
 
 }

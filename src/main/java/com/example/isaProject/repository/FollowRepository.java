@@ -17,14 +17,17 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
             "FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
     boolean existsByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);
 
+    @Query("SELECT f FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
+    Follow findByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);
+
     //Follow deleteByFollowerIdAndFolloweeId(Long followerId, Long followeeId);
     //@Query("DELETE FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
     //void deleteByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);
 
-    @Modifying // Oznaka za modifikovanje podataka (DML operacija)
-    @Transactional // Potrebno za DML operacije
-    @Query("DELETE FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
-    void deleteByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);
+    //@Modifying // Oznaka za modifikovanje podataka (DML operacija)
+    //@Transactional // Potrebno za DML operacije
+   // @Query("DELETE FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
+    //void deleteByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);
 
 
     @Query("SELECT COUNT(f) FROM Follow f WHERE f.follower.id = :userId AND f.followCreation >= :oneMinuteAgo")
@@ -44,14 +47,9 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
   /*  @Query("SELECT p.user.id FROM Post p " + "WHERE p.user.id = :userId " + "GROUP BY p.user.id " + "HAVING COUNT(p) BETWEEN :from AND :to")
     Long countFolloweeForUser(@Param("userId") Long userId, @Param("from") Long from,@Param("to") Long to);
 */
-  @Query("SELECT p.user.id " +
-          "FROM Post p " +
-          "WHERE p.user.id = :userId " +
-          "GROUP BY p.user.id " +
-          "HAVING (:from IS NULL OR COUNT(p) >= :from) AND (:to IS NULL OR COUNT(p) <= :to)")
-  Long countFolloweeForUser(@Param("userId") Long userId,
-                            @Param("from") Long from,
-                            @Param("to") Long to);
+
+    @Query("SELECT COUNT(f.followee) FROM Follow f WHERE f.follower.id = :userId")
+    Long countFollowersOfUser(@Param("userId") Long userId);
 
 
 }

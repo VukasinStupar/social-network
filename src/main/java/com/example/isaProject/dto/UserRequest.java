@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -14,6 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRequest {
+
     private Long id;
 
     private String name;
@@ -30,6 +32,8 @@ public class UserRequest {
 
     private boolean enabled;
 
+    private Timestamp lastPasswordResetDate;
+
 
     public UserRequest(User user) {
         this.id = user.getId();
@@ -40,9 +44,8 @@ public class UserRequest {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.enabled = user.isEnabled();
+        this.lastPasswordResetDate = user.getLastPasswordResetDate();
     }
-
-
 
 
 }

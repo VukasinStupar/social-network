@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -22,18 +21,21 @@ public class UserDisplayDto {
 
     private String email;
 
-    private Long numberOfPosts;
+    private int numberOfPosts;
 
-    private Long numberOfFallow;
+    private int numberOfFollowers;
+
+    private int numberOfFollowee;
 
 
-    public UserDisplayDto(User user, Long numberOfPosts, Long numberOfFallow){
+    public UserDisplayDto(User user){
         this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
         this.email = user.getEmail();
-        this.numberOfPosts = numberOfPosts;
-        this.numberOfFallow = numberOfFallow;
+        this.numberOfPosts = user.getNumberOfPosts();
+        this.numberOfFollowers = user.getNumberOfFollowers();
+        this.numberOfFollowee = user.getNumberOfFollowees();
 
     }
 

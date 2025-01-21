@@ -49,17 +49,20 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                            @Param("from") Long from,
                            @Param("to") Long to);
 */
-   @Query("SELECT COALESCE(COUNT(p), 0) " +
-           "FROM Post p " +
-           "WHERE p.user.id = :userId " +
-           "GROUP BY p.user.id " +
-           "HAVING (:from IS NULL OR COUNT(p) >= :from) " +
-           "AND (:to IS NULL OR COUNT(p) <= :to)")
-   Long countPostsForUser(@Param("userId") Long userId,
-                          @Param("from") Long from,
-                          @Param("to") Long to);
+   @Query("SELECT COUNT(p) FROM Post p WHERE p.user.id = :userId")
+   Long countPostsByUser(@Param("userId") Long userId);
 
 
+    Post findPostById(Long id);
 
+    //domaci
+    @Query("SELECT COUNT(p) FROM Post p WHERE p.createdAt <= time")
+    Long countPostByData(@Param("time") LocalDateTime time);
+
+    @Query("SELECT COUNT(p.user.id) FROM Post p")
+    Long countUserOnPostAllTime();
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.id NOT IN (SELECT p.user.id FROM Post p)")
+    Long countUserWithNoPosts();
 
 }
