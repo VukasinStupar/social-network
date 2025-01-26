@@ -25,8 +25,13 @@ public class ApplicationAnalyticsDTO {
     private Long countUserOnPostAllTime;
     private Long countUserOnCommentAllTime;
 
-    private double countUserWithNoComment;
-    private double countUserWithNoPost;
-    private double usersWithNoPostAndNoComment;
+
+    private double percentUserWithPost;
+    private double percentUserWithComment;
+    private double percentUsersWithZeroActivity;
+
+    private Long countUserWithPostLong;
+    private Long countUserWithCommentLong;
+    private Long UsersWithZeroActivityLong;
 
 }

@@ -5,6 +5,7 @@ import com.example.isaProject.model.Comment;
 import com.example.isaProject.model.Post;
 import com.example.isaProject.model.User;
 import com.example.isaProject.repository.CommentRepository;
+import com.example.isaProject.repository.LikeRepository;
 import com.example.isaProject.repository.PostRepository;
 import com.example.isaProject.repository.UserRepository;
 import com.example.isaProject.service.PostService;
@@ -33,6 +34,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private LikeRepository likeRepository;
 
 
 
@@ -148,11 +152,28 @@ public class PostServiceImpl implements PostService {
             return null;
         }
 
+        likeRepository.deleteAllByPostId(post.getId());
+
+        commentRepository.deleteAllByPostId(post.getId());
+
         postRepository.delete(post);
         return post;
 
     }
 
+    @Override
+    public PostDetailsDto displayPostById(Long postId){
+        Post post = postRepository.findPostById(postId);
+
+
+        List<Comment> comments = commentRepository.commentByPost(post.getId());
+        List<CommentDto> commentDto = CommentDto.convertListToDto(comments);
+
+        PostDetailsDto postDetailsDto = new PostDetailsDto(post, commentDto);
+
+
+        return postDetailsDto;
+    }
 
 
 }

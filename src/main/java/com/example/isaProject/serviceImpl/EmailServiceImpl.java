@@ -54,7 +54,8 @@ public class EmailServiceImpl {
         mail.setTo(user.getEmail());
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("Account Activation");
-        String activationLink = "http://localhost:8080/api/auth/activate?token=" + activationToken;
+        String activationLink = "http://localhost:8080/auth/activate?token=" + activationToken;
+
         mail.setText("Welcome to the app! Please activate your account by clicking the link below:\n" + activationLink);
         javaMailSender.send(mail);
     }

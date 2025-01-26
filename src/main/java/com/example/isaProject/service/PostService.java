@@ -39,4 +39,5 @@ public interface PostService {
     public Post deletePost(Long id);
 
 
+    public PostDetailsDto displayPostById(Long postId);
 }

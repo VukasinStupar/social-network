@@ -6,11 +6,14 @@ import com.example.isaProject.model.Comment;
 import com.example.isaProject.model.User;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface CommentService {
 
-    public Comment create(CommentDto commentDto, User loggedUser);
+    Comment create(CommentDto commentDto, User loggedUser);
 
-    public ApplicationAnalyticsDTO ApplicationAnalytics();
+    ApplicationAnalyticsDTO applicationAnalytics();
+
 
 
 }

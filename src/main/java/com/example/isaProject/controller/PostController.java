@@ -3,9 +3,11 @@ package com.example.isaProject.controller;
 import com.example.isaProject.dto.PostDetailsDto;
 import com.example.isaProject.dto.PostDto;
 import com.example.isaProject.dto.TrendingDto;
+import com.example.isaProject.model.Comment;
 import com.example.isaProject.model.Post;
 import com.example.isaProject.model.User;
 import com.example.isaProject.securityAuth.TokenBasedAuthentication;
+import com.example.isaProject.service.CommentService;
 import com.example.isaProject.service.PostService;
 import com.example.isaProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ import java.util.List;
 public class PostController {
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CommentService commentService;
 
 
     @PostMapping(consumes = "application/json")
@@ -91,6 +96,17 @@ public class PostController {
         }
 
         return new ResponseEntity<>(post, HttpStatus.OK);
+    }
+
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostDetailsDto> displayPostById(@PathVariable Long postId){
+        PostDetailsDto postDetailsDto = postService.displayPostById(postId);
+        if(postDetailsDto == null){
+            return new ResponseEntity<PostDetailsDto>(HttpStatus.BAD_REQUEST);
+        }
+
+
+        return new ResponseEntity<PostDetailsDto>(postDetailsDto, HttpStatus.OK);
     }
 
 }

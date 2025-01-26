@@ -36,8 +36,7 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private EmailServiceImpl emailServiceImpl;
+
 
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
@@ -78,25 +77,14 @@ public class AuthenticationController {
         if (existUser != null) {
             throw new ResourceConflictException(userRequest.getId(), "Username already exists");
         }
-        User newUser = new User();
-        newUser.setUsername(userRequest.getUsername());
-        newUser.setPassword(userRequest.getPassword());
-        newUser.setEmail(userRequest.getEmail());
-        newUser.setName(userRequest.getName());
-        newUser.setSurname(userRequest.getSurname());
-        newUser.setEnabled(false);
 
-        String activationToken = UUID.randomUUID().toString();
-        String activationLink = "http://localhost:8080/auth/activate?token=" + activationToken;
 
-        emailServiceImpl.sendActivationCodeAndLink(newUser, activationToken);
-
-       userService.save(newUser);
+       User newUser = userService.save(userRequest);
 
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("/auth/activate")
+    @GetMapping("/activate")
     public ResponseEntity<String> activateAccount(@RequestParam("token") String token) {
         boolean isActivated = userService.activateUser(token);
 

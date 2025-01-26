@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -69,23 +70,26 @@ public class UserServiceImpl implements UserService {
     public User save(UserRequest userRequest) {
         User u = new User();
         u.setName(userRequest.getName());
+        u.setSurname(userRequest.getSurname());
         u.setUsername(userRequest.getUsername());
         u.setAdress(userRequest.getAdress());
         u.setEmail(userRequest.getEmail());
         u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
-        u.setEnabled(true);
+        u.setEnabled(false);
 
         List<Role> roles = roleService.findByName("ROLE_USER");
         u.setRoles(roles);
 
-        return this.userRepository.save(u);
+        String activationToken = UUID.randomUUID().toString();
+        u.setActivationToken(activationToken);
 
-    }
+        u = userRepository.save(u);
 
-    @Override
-    public User save(User user) {
-        return null;
+        emailService.sendActivationCodeAndLink(u, activationToken);
+
+        return u;
+
     }
 
     @Override
@@ -177,15 +181,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean activateUser(String token) {
 
-        String username = tokenUtils.getUsernameFromToken(token);
 
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findUserByActivationToken(token);
         if(user == null){
             return false;
-        }
-
-        if (!tokenUtils.validateToken(token, user)) {
-            throw new IllegalArgumentException("Invalid or expired token");
         }
 
         if (user.isEnabled()) {

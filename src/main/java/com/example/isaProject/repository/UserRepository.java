@@ -16,6 +16,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserByName(String name);
 
+    User findUserByActivationToken(String activationToken);
+
+
 
     @Query("SELECT COUNT(p) FROM Post p WHERE p.user.id = :userId AND p.createdAt >= :fromDate")
     Long numberOfPostsLast7Days(@Param("userId") Long userId, @Param("fromDate") LocalDateTime fromDate);
@@ -66,8 +69,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
                           Pageable pageable);
 
 
-    @Query("SELECT COUNT(u) FROM User u")
-    Long countTotalUsers();
+    @Query("SELECT COUNT(DISTINCT u.id) FROM User u " +
+            "WHERE u.id NOT IN (SELECT p.user.id FROM Post p) and u.id NOT IN (SELECT c.user.id FROM Comment c)")
+    Long findUsersWithZeroActivityLong();
+
+
 }
 
 

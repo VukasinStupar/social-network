@@ -34,17 +34,8 @@ public class CommentController {
         CommentDto dto = new CommentDto(comment);
         return new ResponseEntity<CommentDto>(dto, HttpStatus.OK);
     }
-//domaci
-    @GetMapping("ApplicationAnalytics")
-    public ResponseEntity<ApplicationAnalyticsDTO>ApplicationAnalytics(){
-        ApplicationAnalyticsDTO newAppAnalystics = commentService.ApplicationAnalytics();
 
-        if(newAppAnalystics == null){
-            return new ResponseEntity<ApplicationAnalyticsDTO>(HttpStatus.BAD_REQUEST);
-        }
 
-        return new ResponseEntity<ApplicationAnalyticsDTO>(newAppAnalystics, HttpStatus.OK);
-    }
 }
 
 

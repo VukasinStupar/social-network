@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -58,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
 
     }
     //domaci
-    public ApplicationAnalyticsDTO ApplicationAnalytics(){
+    public ApplicationAnalyticsDTO applicationAnalytics(){
 
         ApplicationAnalyticsDTO aaDto = new ApplicationAnalyticsDTO();
 
@@ -67,34 +68,44 @@ public class CommentServiceImpl implements CommentService {
         LocalDateTime timeYear = LocalDateTime.now().minusYears(1);
 
         Long numberOfPostByWeek = postRepository.countPostByData(timeWeek);
-        Long numberOfPostByYear = postRepository.countPostByData(timeMonth);
-        Long numberOfPostByMonth = postRepository.countPostByData(timeYear);
+        Long numberOfPostByMonth = postRepository.countPostByData(timeMonth);
+        Long numberOfPostByYear  = postRepository.countPostByData(timeYear);
 
-        Long numberOfCommentByWeek = postRepository.countPostByData(timeWeek);
-        Long numberOfCommentByMonth = postRepository.countPostByData(timeMonth);
-        Long numberOfCommentByYear = postRepository.countPostByData(timeYear);
+        Long numberOfCommentByWeek = commentRepository.countCommentByData(timeWeek);
+        Long numberOfCommentByMonth = commentRepository.countCommentByData(timeMonth);
+        Long numberOfCommentByYear = commentRepository.countCommentByData(timeYear);
 
-        Long countUserWithNoComment =commentRepository.countUserWithNoComments();
-        Long countUserWithNoPost = postRepository.countUserWithNoPosts();
-        Long totalUsers = userRepository.countTotalUsers();
+        Long UserWithPost =postRepository.countUsersWithPosts();
+        Long UserWithComment = commentRepository.countUsersWithComments();
+        long totalUsers = userRepository.count();
+
+        Long userWithZeroActivity = userRepository.findUsersWithZeroActivityLong();
 
 
         aaDto.setNumberOfPostByWeek(numberOfPostByWeek);
-        aaDto.setNumberOfPostByMonth(numberOfPostByYear);
-        aaDto.setNumberOfPostByYear(numberOfPostByMonth);
+        aaDto.setNumberOfPostByMonth(numberOfPostByMonth);
+        aaDto.setNumberOfPostByYear(numberOfPostByYear);
 
         aaDto.setNumberOfCommentByWeek(numberOfCommentByWeek);
         aaDto.setNumberOfCommentByMonth(numberOfCommentByMonth);
         aaDto.setNumberOfCommentByYear(numberOfCommentByYear);
 
-        aaDto .setCountUserWithNoComment(countUserWithNoComment);
-        aaDto.setCountUserWithNoPost(countUserWithNoPost);
+        aaDto.setCountUserWithPostLong(UserWithPost);
+        aaDto.setCountUserWithCommentLong(UserWithComment);
+        //aaDto.setUsersWithZeroActivityLong(totalUsers - (UserWithPost + UserWithComment));
+        aaDto.setUsersWithZeroActivityLong(userWithZeroActivity);
 
-        double usersWithPostPercentage = (double) countUserWithNoPost / totalUsers * 100;
-        double usersWithCommentOnlyPercentage = (double) countUserWithNoComment / totalUsers * 100;
-        double usersWithNoPostAndNoCommentPercentage = (double) (countUserWithNoComment + countUserWithNoPost) / totalUsers * 100;
+        double usersWithPostPercentage = (double) UserWithComment / totalUsers * 100;
+        double usersWithCommentOnlyPercentage = (double) UserWithPost / totalUsers * 100;
+        double usersWithNoPostAndNoCommentPercentage = (double) userWithZeroActivity / totalUsers * 100;
+
+        aaDto.setPercentUserWithPost(usersWithPostPercentage);
+        aaDto.setPercentUserWithComment(usersWithCommentOnlyPercentage);
+        aaDto.setPercentUsersWithZeroActivity(usersWithNoPostAndNoCommentPercentage);
 
         return aaDto;
     }
+
+
 
 }

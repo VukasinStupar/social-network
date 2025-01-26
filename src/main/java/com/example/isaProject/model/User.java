@@ -62,6 +62,9 @@ public class User implements UserDetails {
     @Column(name = "number_of_followees")
     private int numberOfFollowees;
 
+    @Column(name = "activation_token", nullable = false, unique = true)
+    private String activationToken;
+
 
 
     @ManyToMany(fetch = FetchType.EAGER)

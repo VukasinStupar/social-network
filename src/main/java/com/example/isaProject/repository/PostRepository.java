@@ -56,13 +56,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Post findPostById(Long id);
 
     //domaci
-    @Query("SELECT COUNT(p) FROM Post p WHERE p.createdAt <= time")
+    @Query("SELECT COUNT(p) FROM Post p WHERE p.createdAt >= time")
     Long countPostByData(@Param("time") LocalDateTime time);
 
-    @Query("SELECT COUNT(p.user.id) FROM Post p")
-    Long countUserOnPostAllTime();
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.id NOT IN (SELECT p.user.id FROM Post p)")
-    Long countUserWithNoPosts();
+
+    @Query("SELECT COUNT(DISTINCT p.user.id) FROM Post p")
+    Long countUsersWithPosts();
 
 }

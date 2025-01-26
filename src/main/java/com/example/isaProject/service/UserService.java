@@ -21,7 +21,6 @@ public interface UserService {
 
     User save(UserRequest userRequest);
 
-    User save(User user);
 
      Long getPostNumber7Days(Long userId);
 
