@@ -40,7 +40,6 @@ public class FollowController {
     public ResponseEntity<?> deleteFollow(@PathVariable Long followeeId, Principal principal){
         User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
         followService.unFollow(loggedUser, followeeId);
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
