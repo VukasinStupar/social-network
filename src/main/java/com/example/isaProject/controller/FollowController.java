@@ -43,8 +43,4 @@ public class FollowController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
-
 }
