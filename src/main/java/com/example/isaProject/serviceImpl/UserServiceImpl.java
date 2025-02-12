@@ -188,7 +188,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (user.isEnabled()) {
-            throw new IllegalStateException("User is already activated");
+            return false;
         }
         user.setEnabled(true);
 

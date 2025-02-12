@@ -84,8 +84,8 @@ public class AuthenticationController {
         return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
     }
 
-    @GetMapping("/activate")
-    public ResponseEntity<String> activateAccount(@RequestParam("token") String token) {
+    @PutMapping("/activate/{token}")
+    public ResponseEntity<String> activateAccount(@PathVariable("token") String token) {
         boolean isActivated = userService.activateUser(token);
 
         if (isActivated) {
