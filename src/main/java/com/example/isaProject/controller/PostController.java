@@ -22,7 +22,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-@CrossOrigin
+
+@CrossOrigin(allowedHeaders = "*")
 public class PostController {
     @Autowired
     private PostService postService;
@@ -60,12 +61,13 @@ public class PostController {
         return new ResponseEntity<ArrayList<PostDto>>(postDto, HttpStatus.OK);
     }
 
-    @PostMapping("displayAllPost")
-    public ResponseEntity<List<PostDetailsDto>> displayAllPostByDesc(int page, int size){
-        List<PostDetailsDto> posts = postService.displayDetailedPosts(page, size);
 
+    @PostMapping("displayAllPost")
+    public ResponseEntity<List<PostDetailsDto>> displayAllPostByDesc(@RequestParam int page, @RequestParam int size) {
+        List<PostDetailsDto> posts = postService.displayDetailedPosts(page, size);
         return new ResponseEntity<List<PostDetailsDto>>(posts, HttpStatus.OK);
     }
+
 
     public ResponseEntity<TrendingDto> getTrending(){
         TrendingDto trendingDto = postService.getAppTrending();
