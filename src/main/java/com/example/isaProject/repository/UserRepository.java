@@ -1,7 +1,9 @@
 package com.example.isaProject.repository;
 
+import com.example.isaProject.model.Post;
 import com.example.isaProject.model.User;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -73,7 +75,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.id NOT IN (SELECT p.user.id FROM Post p) and u.id NOT IN (SELECT c.user.id FROM Comment c)")
     Long findUsersWithZeroActivityLong();
 
+    @Query("SELECT u FROM User u ORDER BY u.name DESC")
+    List<User> findAllUsersSortedDesc(Pageable pageable);
 
 }
-
-

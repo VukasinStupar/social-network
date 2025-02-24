@@ -46,6 +46,11 @@ public class PostController {
         return new ResponseEntity<PostDto>(dto, HttpStatus.OK);
 
     }
+    @GetMapping
+    public ResponseEntity<List<PostDetailsDto>> displayAllPostByDesc(@RequestParam int page, @RequestParam int size) {
+        List<PostDetailsDto> posts = postService.displayDetailedPosts(page, size);
+        return new ResponseEntity<List<PostDetailsDto>>(posts, HttpStatus.OK);
+    }
 
     @GetMapping("displayUserPosts/{userId}")
     public ResponseEntity<ArrayList<PostDto>> displayUserPosts(@PathVariable Long userId){
@@ -62,11 +67,7 @@ public class PostController {
     }
 
 
-    @PostMapping("displayAllPost")
-    public ResponseEntity<List<PostDetailsDto>> displayAllPostByDesc(@RequestParam int page, @RequestParam int size) {
-        List<PostDetailsDto> posts = postService.displayDetailedPosts(page, size);
-        return new ResponseEntity<List<PostDetailsDto>>(posts, HttpStatus.OK);
-    }
+
 
 
     public ResponseEntity<TrendingDto> getTrending(){

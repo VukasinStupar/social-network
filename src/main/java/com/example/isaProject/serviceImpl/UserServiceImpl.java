@@ -1,8 +1,7 @@
 package com.example.isaProject.serviceImpl;
 
-import com.example.isaProject.dto.UserDisplayDto;
-import com.example.isaProject.dto.UserRequest;
-import com.example.isaProject.dto.UserSearchDto;
+import com.example.isaProject.dto.*;
+import com.example.isaProject.model.Comment;
 import com.example.isaProject.model.Post;
 import com.example.isaProject.model.Role;
 import com.example.isaProject.model.User;
@@ -62,9 +61,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseGet(null);
     }
 
-    public List<User> findAll() throws AccessDeniedException {
-        return userRepository.findAll();
+    @Override
+    public List<User> findAll(int page, int size)  {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAllUsersSortedDesc(pageable);
     }
+
 
     @Override
     public User save(UserRequest userRequest) {

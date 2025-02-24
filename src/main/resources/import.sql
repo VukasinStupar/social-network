@@ -20,5 +20,4 @@ INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES (
 INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 4','2017-10-01 21:58','slika4',4, 0);
 INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 5','2017-10-01 21:58','slika5',5, 0);
 
-
-
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (1,2,'test','2017-10-01 21:58:58.508-07');

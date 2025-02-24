@@ -50,8 +50,9 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<UserDto>> getAll() {
-        List<User> user = userService.findAll();
+    public ResponseEntity<ArrayList<UserDto>> getAll(@RequestParam(defaultValue = "1") int page,
+                                                     @RequestParam(defaultValue = "10") int size) {
+        List<User> user = userService.findAll(page, size);
 
         ArrayList<UserDto> dtos = new ArrayList<UserDto>();
         for (User us : user) {
