@@ -45,12 +45,6 @@ public class MessageServiceImpl implements MessageService {
     }
 
 
-    @Override
-    public List<Message> getAllFromChat(Long senderId, Long recepientId){
-        List<Message> messages = messageRepository.findAllChatMessages(senderId, recepientId);
-        return messages;
-    }
-
     //domaci
     @Override
     public List<Long> findAllUsersByRecipient(Long userId) {
@@ -63,21 +57,12 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<User> findAllUsersByUser(Long userId) {
-        List<Long> usersIdByRecipient = messageRepository.findAllUsersByRecipient(userId);
-        List<Long> usersIdBySender = messageRepository.findAllUsersBySender(userId);
+    public List<User> findAllChatUsers(Long userId) {
+        return messageRepository.findAllChatUsers(userId);
+    }
 
-        List<Long> allUsersId = new ArrayList<>();
-
-        allUsersId.addAll(usersIdByRecipient);
-        allUsersId.addAll(usersIdBySender);
-
-        List<User> userList = new ArrayList<>();
-
-        for(Long id : allUsersId){
-           User users = userRepository.findById(id).orElse(null);
-            userList.add(users);
-        }
-        return userList;
+    @Override
+    public List<Message> findAllMessagesForUsers(Long userId1, Long userId2) {
+        return messageRepository.findAllChatMessages(userId1, userId2);
     }
 }

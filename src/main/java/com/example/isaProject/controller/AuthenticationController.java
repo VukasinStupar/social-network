@@ -60,7 +60,7 @@ public class AuthenticationController {
         }
         userService.setLastLogin(user.getId());
 
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(user);
         int expiresIn = tokenUtils.getExpiredIn();
 
         // Vrati token kao odgovor na uspesnu autentifikaciju

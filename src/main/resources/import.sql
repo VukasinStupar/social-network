@@ -20,4 +20,13 @@ INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES (
 INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 4','2017-10-01 21:58','slika4',4, 0);
 INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 5','2017-10-01 21:58','slika5',5, 0);
 
-INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (1,2,'test','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (1,2,'test1','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (1,2,'test2','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (2,1,'test3','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (3,1,'test4','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (3,2,'test5','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (1,2,'test6','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (3,1,'test7','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (2,1,'test8','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (2,3,'test9','2017-10-01 21:58:58.508-07');
+INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (3,2,'test10','2017-10-01 21:58:58.508-07');

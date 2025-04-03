@@ -24,6 +24,7 @@ public class MessageDto {
     private String text;
 
     private LocalDateTime sendTime;
+    private String sendTimeStr;
 
     public MessageDto(Message message) {
         this.id = message.getId();
@@ -31,6 +32,7 @@ public class MessageDto {
         this.text = message.getText();
         this.sendTime = message.getSendTime();
         this.recipientId = message.getRecipient().getId();
+        this.sendTimeStr = message.getSendTime().toString();
     }
 
     public Message mapTo() {

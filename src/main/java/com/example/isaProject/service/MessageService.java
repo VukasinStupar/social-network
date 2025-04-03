@@ -13,12 +13,13 @@ import java.util.Optional;
 public interface MessageService {
     public Message create(User loggedUser, MessageDto messageDto);
 
-    public List<Message> getAllFromChat(Long senderId, Long recepientId);
 
     //domaci
     List<Long> findAllUsersByRecipient(Long userId);
 
     List<Long> findAllUsersBySender(Long userId);
 
-    List<User> findAllUsersByUser(Long userId);
+    List<User> findAllChatUsers(Long userId);
+
+    List<Message> findAllMessagesForUsers(Long userId1, Long userId2);
 }

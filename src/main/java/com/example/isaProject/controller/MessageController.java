@@ -48,39 +48,38 @@ public class MessageController {
         return new ResponseEntity<MessageDto>(dto, HttpStatus.OK);
     }
 
-    @GetMapping("getAllFromChat/{senderId}/{recepientId}")
-    public ResponseEntity<ArrayList<MessageDto>> getAllFromChat(@PathVariable Long senderId, @PathVariable Long recepientId){
-        List<Message> messages = messageService.getAllFromChat(senderId, recepientId);
-        if(messages == null){
-            return new ResponseEntity<ArrayList<MessageDto>>(HttpStatus.BAD_REQUEST);
+
+
+
+    @GetMapping("/chatted-users")
+    public ResponseEntity<ArrayList<UserDto>> getChattedUsers(Principal principal) {
+        User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
+
+        Long userId = loggedUser.getId();
+        List<User> users = messageService.findAllChatUsers(userId);
+
+
+        ArrayList<UserDto> userDtos = new ArrayList<>();
+
+        for (User us : users) {
+            userDtos.add(new UserDto(us));
         }
 
+        return new ResponseEntity<>(userDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("messagesWithUser/{userId}")
+    public ResponseEntity<ArrayList<MessageDto>> getAllMessagesWithUser(Principal principal, @PathVariable Long userId){
+        User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
+
+        List<Message> messages = messageService.findAllMessagesForUsers(loggedUser.getId(), userId);
+
         ArrayList<MessageDto> messageDtos = new ArrayList<MessageDto>();
-        for(Message message : messages){
-            messageDtos.add(new MessageDto(message));
+
+        for(Message iter : messages){
+            messageDtos.add(new MessageDto(iter));
         }
         return new ResponseEntity<ArrayList<MessageDto>>(messageDtos, HttpStatus.OK);
     }
-
-    //domaci
-    @GetMapping("getAllUsersForUser")
-    public ResponseEntity<ArrayList<UserDto>> getAllUsersForUser(Principal principal){
-        ArrayList<UserDto> userDtos = new ArrayList<UserDto>();
-
-        User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
-        if(loggedUser == null){
-            return new ResponseEntity<ArrayList<UserDto>>(HttpStatus.BAD_REQUEST);
-        }
-        Long userId = loggedUser.getId();
-
-        List<User> users = messageService.findAllUsersByUser(userId);
-
-        for(User us : users){
-            userDtos.add(new UserDto(us));
-
-        }
-        return new ResponseEntity<ArrayList<UserDto>>(userDtos, HttpStatus.OK);
-    }
-
 
 }
