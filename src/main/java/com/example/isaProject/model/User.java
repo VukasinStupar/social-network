@@ -74,10 +74,6 @@ public class User implements UserDetails {
     private List<Role> roles;
 
 
-
-
-
-
     public void setPassword(String password) {
         Timestamp now = new Timestamp(new Date().getTime());
         this.setLastPasswordResetDate(now);

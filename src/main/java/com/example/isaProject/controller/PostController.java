@@ -66,10 +66,6 @@ public class PostController {
         return new ResponseEntity<ArrayList<PostDto>>(postDto, HttpStatus.OK);
     }
 
-
-
-
-
     public ResponseEntity<TrendingDto> getTrending(){
         TrendingDto trendingDto = postService.getAppTrending();
         return new ResponseEntity<TrendingDto>(trendingDto, HttpStatus.OK);

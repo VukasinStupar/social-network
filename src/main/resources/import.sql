@@ -30,3 +30,12 @@ INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (3,1,'test
 INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (2,1,'test8','2017-10-01 21:58:58.508-07');
 INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (2,3,'test9','2017-10-01 21:58:58.508-07');
 INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (3,2,'test10','2017-10-01 21:58:58.508-07');
+
+INSERT INTO GROUP_CHAT (admin_id, name, create_time) VALUES (1, 'Group1', '2024-04-13 15:10:00');
+
+INSERT INTO group_user (user_id, group_chat_id, added_at) VALUES (1, 1, '2024-04-13 15:15:00');
+INSERT INTO group_user (user_id, group_chat_id, added_at) VALUES (2, 1, '2024-04-13 15:20:00');
+INSERT INTO group_user (user_id, group_chat_id, added_at) VALUES (3, 1, '2024-04-13 15:25:00');
+
+INSERT INTO group_message (group_chat_id, sender_id, text, send_time) VALUES (1, 1, 'Hello, this is Mare!', '2024-04-13 15:25:00');
+INSERT INTO group_message (group_chat_id, sender_id, text, send_time) VALUES (1, 2, 'Hello, this is Pera!', '2024-04-13 15:25:00');

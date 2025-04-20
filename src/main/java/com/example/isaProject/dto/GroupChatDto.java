@@ -23,12 +23,8 @@ import java.util.stream.Collectors;
 
 public class GroupChatDto {
     private Long id;
-
     private Long adminId;
-
-
     private LocalDateTime createTime;
-
     private String name;
 
     public GroupChatDto(GroupChat groupChat){
@@ -38,8 +34,4 @@ public class GroupChatDto {
         this.name = groupChat.getName();
 
     }
-
-
-
-
 }

@@ -32,7 +32,7 @@ public interface GroupMessageRepository extends JpaRepository<GroupMessage, Long
     );
 
    @Query(value = "(SELECT * FROM group_message gm WHERE gm.group_chat_id = :groupChatId AND gm.send_time < :pointInTime ORDER BY gm.send_time DESC LIMIT 10) " +
-           "UNION ALL " +
+           " UNION ALL " +
             "(SELECT * FROM group_message gm WHERE gm.group_chat_id = :groupChatId AND gm.send_time > :pointInTime ORDER BY gm.send_time ASC)",
             nativeQuery = true)
     List<GroupMessage> findMessagesAroundPoint(

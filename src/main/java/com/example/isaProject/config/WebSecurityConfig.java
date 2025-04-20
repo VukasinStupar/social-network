@@ -25,6 +25,7 @@ public class WebSecurityConfig {
     // Servis koji se koristi za citanje podataka o korisnicima aplikacije
     @Bean
     public UserDetailsService userDetailsService() {
+
         return new CustomUserDetailsService();
     }
 
@@ -76,7 +77,8 @@ public class WebSecurityConfig {
 
         // sve neautentifikovane zahteve obradi uniformno i posalji 401 gresku
         http.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint);
-        http.authorizeRequests().antMatchers("/auth/**").permitAll()	// /auth/**
+        http.authorizeRequests().antMatchers("/auth/**").permitAll()
+                .antMatchers("/ws/**").permitAll()
 
                 //.antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
                 //.antMatchers(HttpMethod.POST, "/api/companies").permitAll()

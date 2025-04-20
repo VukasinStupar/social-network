@@ -22,10 +22,11 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private UserRepository userRepository;
 
-    public Message create(User loggedUser, MessageDto messageDto){
-        User userSender = userRepository.findById(loggedUser.getId()).orElse(null);
+    public Message create(MessageDto messageDto){
+        User userSender = userRepository.findById(messageDto.getSenderId()).orElse(null);
         if (userSender == null) {
             return null;
+
         }
 
         User userRecipient = userRepository.findById(messageDto.getRecipientId()).orElse(null);

@@ -68,7 +68,6 @@ public class UserController {
         UserDto userDto = new UserDto(loggedUser);
 
         return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
-
     }
 
     @PostMapping("/send-notifications")
@@ -86,7 +85,6 @@ public class UserController {
 
     @GetMapping("/findUsersByAttributes")
     public ResponseEntity<List<UserDisplayDto>> findUsersByAttributes(@RequestBody UserSearchDto userSearchDto) {
-
 
         List<UserDisplayDto> dtos = userService.findUsersByAttributes(userSearchDto);
 

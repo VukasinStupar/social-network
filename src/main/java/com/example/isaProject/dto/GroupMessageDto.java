@@ -31,7 +31,7 @@ public class GroupMessageDto {
 
     public GroupMessageDto(GroupMessage groupMessage){
         this.id = groupMessage.getId();
-        this.groupChatId = groupMessage.getId();
+        this.groupChatId = groupMessage.getGroupChat().getId();
         this.senderId = groupMessage.getSender().getId();
         this.senderUsername = groupMessage.getSender().getUsername();
         this.text = groupMessage.getText();

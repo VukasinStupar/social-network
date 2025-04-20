@@ -112,14 +112,18 @@ public class GroupChatServiceImpl implements GroupChatService {
 
 
     @Override
-    public GroupMessage sentMessageGroup(User loggedUser, GroupMessageDto groupMessageDto) {
+    public GroupMessage sentMessageGroup(GroupMessageDto groupMessageDto) {
+        User user = userRepository.findById(groupMessageDto.getSenderId()).orElse(null);
+        if(user == null){
+            return null;
+        }
 
         GroupChat groupChat = groupChatRepository.findById(groupMessageDto.getGroupChatId()).orElse(null);
 
         if(groupChat == null){
             return null;
         }
-        GroupUser groupUser = groupUserRepository.findByUserIdGroupId(loggedUser.getId(), groupMessageDto.getGroupChatId());
+        GroupUser groupUser = groupUserRepository.findByUserIdGroupId(groupMessageDto.getSenderId(), groupMessageDto.getGroupChatId());
         if(groupUser == null){
             return null;
         }
@@ -127,7 +131,7 @@ public class GroupChatServiceImpl implements GroupChatService {
         GroupMessage groupMessage = new GroupMessage();
         groupMessage.setGroupChat(groupChat);
         groupMessage.setText(groupMessageDto.getText());
-        groupMessage.setSender(loggedUser);
+        groupMessage.setSender(user);
         groupMessage.setSendTime(LocalDateTime.now());
 
         groupMessageRepository.save(groupMessage);
@@ -160,9 +164,7 @@ public class GroupChatServiceImpl implements GroupChatService {
         }
         LocalDateTime enteringGroupTime = groupUser.getAddedAt();
 
-
         List<GroupMessage> groupMessages = groupMessageRepository.findMessagesAroundPoint(groupId, enteringGroupTime);
-
         return groupMessages;
    }
 

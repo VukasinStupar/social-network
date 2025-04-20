@@ -16,9 +16,10 @@ public interface GroupChatService {
     GroupChat addUser(Long groupChatId, Long newUserId, Long loggedUserId);
 
     GroupUser deleteUserGroup(Long groupChatId, Long removeUserId, Long loggedUserId);
+
     List<GroupUser> allGroupUser(Long userId);
 
-    GroupMessage sentMessageGroup(User loggedUser, GroupMessageDto groupMessageDto);
+    GroupMessage sentMessageGroup(GroupMessageDto groupMessageDto);
 
     List<GroupMessage> getGroupMessages(Long groupId,  Long loggedUserId);
 

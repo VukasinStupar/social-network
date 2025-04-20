@@ -32,9 +32,7 @@ public class GroupChatController {
         if(groupChat == null){
             return new ResponseEntity<GroupChatDto>(HttpStatus.BAD_REQUEST);
         }
-
         GroupChatDto dto = new GroupChatDto(groupChat);
-
 
         return new ResponseEntity<GroupChatDto>(dto, HttpStatus.OK);
     }
@@ -66,7 +64,7 @@ public class GroupChatController {
 
         User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
 
-        GroupMessage groupMessage = groupChatService.sentMessageGroup(loggedUser, groupMessageDto);
+        GroupMessage groupMessage = groupChatService.sentMessageGroup( groupMessageDto);
         if(groupMessage == null){
             return new ResponseEntity<GroupMessageDto>(HttpStatus.BAD_REQUEST);
         }
@@ -90,12 +88,19 @@ public class GroupChatController {
         return new ResponseEntity<ArrayList<GroupChatDto>>(groupChatsDto, HttpStatus.OK);
     }
 
-    @GetMapping("allMessagesForGroup")
-    public ResponseEntity<ArrayList<GroupMessageDto>> allMessagesForGroup(@RequestBody GroupMessageDto groupMessageDto){
+    @GetMapping("allMessagesForGroup/{groupChatId}")
+    public ResponseEntity<List<GroupMessageDto>> allMessagesForGroup(@PathVariable Long groupChatId, Principal principal){
 
+        User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
 
+        List<GroupMessage> groupMessages = groupChatService.getGroupMessages(groupChatId, loggedUser.getId());
 
-        return new ResponseEntity<ArrayList<GroupMessageDto>>( HttpStatus.OK);
+        List<GroupMessageDto> groupMessageDtos = new ArrayList<>();
+        for(GroupMessage groupMessage : groupMessages){
+            groupMessageDtos.add(new GroupMessageDto(groupMessage));
+        }
+
+        return new ResponseEntity<List<GroupMessageDto>>(groupMessageDtos, HttpStatus.OK);
     }
 
 

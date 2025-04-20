@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MessageService {
-    public Message create(User loggedUser, MessageDto messageDto);
+    public Message create(MessageDto messageDto);
 
 
     //domaci

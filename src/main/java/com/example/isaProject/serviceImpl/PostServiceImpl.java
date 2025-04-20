@@ -76,6 +76,7 @@ public class PostServiceImpl implements PostService {
     }
 
     public List<Post> allTrends() {
+
         return postRepository.findAll();
     }
     @Override

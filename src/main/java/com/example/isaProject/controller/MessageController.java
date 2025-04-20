@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -27,6 +28,10 @@ import java.util.Optional;
 @RequestMapping(value = "/api/messages", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
 public class MessageController {
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     @Autowired
     private MessageService messageService;
 
@@ -36,10 +41,9 @@ public class MessageController {
 
 
     @PostMapping
-    public ResponseEntity<MessageDto> create(@RequestBody MessageDto messageDto, Principal principal){
+    public ResponseEntity<MessageDto> create(@RequestBody MessageDto messageDto){
 
-        User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
-        Message message = messageService.create(loggedUser, messageDto);
+        Message message = messageService.create(messageDto);
         if(message == null){
             return new ResponseEntity<MessageDto>(HttpStatus.BAD_REQUEST);
         }
