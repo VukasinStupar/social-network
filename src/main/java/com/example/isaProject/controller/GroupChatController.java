@@ -49,7 +49,7 @@ public class GroupChatController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("removeUserGroup/{groupChatId}/{newUserId}")
+    @PutMapping("removeUserGroup/{groupChatId}/{removeUserId}")
     public ResponseEntity<GroupChatDto> removeUserGroup(Principal principal, @PathVariable Long groupChatId, @PathVariable Long removeUserId){
 
         User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();

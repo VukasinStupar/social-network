@@ -78,4 +78,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u ORDER BY u.name DESC")
     List<User> findAllUsersSortedDesc(Pageable pageable);
 
+    @Query("SELECT u FROM User u WHERE " +
+            "LOWER(u.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+            "LOWER(u.surname) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    List<User> searchByParam(@Param("searchTerm") String searchTerm);
+
 }

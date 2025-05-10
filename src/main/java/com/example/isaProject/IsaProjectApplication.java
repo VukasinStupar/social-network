@@ -10,4 +10,5 @@ public class IsaProjectApplication {
 		SpringApplication.run(IsaProjectApplication.class, args);
 	}
 
+
 }

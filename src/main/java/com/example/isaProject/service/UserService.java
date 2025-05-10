@@ -1,8 +1,6 @@
 package com.example.isaProject.service;
 
-import com.example.isaProject.dto.UserDisplayDto;
-import com.example.isaProject.dto.UserRequest;
-import com.example.isaProject.dto.UserSearchDto;
+import com.example.isaProject.dto.*;
 import com.example.isaProject.model.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -32,5 +30,7 @@ public interface UserService {
     List<UserDisplayDto> findUsersByAttributes(UserSearchDto userSearchDto);
 
     boolean activateUser(String token);
+
+    List<User> searchByParam(String searchTerm);
 
 }

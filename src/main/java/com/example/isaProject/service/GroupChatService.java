@@ -6,6 +6,7 @@ import com.example.isaProject.model.GroupChat;
 import com.example.isaProject.model.GroupMessage;
 import com.example.isaProject.model.GroupUser;
 import com.example.isaProject.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -24,5 +25,6 @@ public interface GroupChatService {
     List<GroupMessage> getGroupMessages(Long groupId,  Long loggedUserId);
 
 
-
+    //DOMACI
+    List<User> findAllUsersInGroup(Long groupChatId, int page, int size);
 }

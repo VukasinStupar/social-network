@@ -20,7 +20,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> commentByPost( @Param("postId") Long postId);
 
     //domaci
-    @Query("SELECT COUNT(c) FROM Comment c WHERE c.commentCreation >= time")
+    @Query("SELECT COUNT(c) FROM Comment c WHERE c.commentCreation >= :time")
     Long countCommentByData(@Param("time") LocalDateTime time);
 
     @Query("SELECT COUNT(c.user.id) FROM Comment c")

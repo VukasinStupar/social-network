@@ -1,13 +1,12 @@
 package com.example.isaProject.controller;
 
-import com.example.isaProject.dto.PostDto;
-import com.example.isaProject.dto.UserDisplayDto;
-import com.example.isaProject.dto.UserDto;
-import com.example.isaProject.dto.UserSearchDto;
+import com.example.isaProject.dto.*;
 import com.example.isaProject.model.User;
 import com.example.isaProject.securityAuth.TokenBasedAuthentication;
+import com.example.isaProject.service.GroupChatService;
 import com.example.isaProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,6 +28,10 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GroupChatService groupChatService;
+
 
     @GetMapping("user/{userId}")
     // @PreAuthorize("hasRole('ADMIN')")
@@ -90,6 +93,32 @@ public class UserController {
 
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
+
+    @GetMapping("/allUsersGroup/{groupChatId}")
+    public ResponseEntity<List<UserDto>> findUsersByAttributes(
+            @PathVariable Long groupChatId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size) {
+
+        List<User> users = groupChatService.findAllUsersInGroup(groupChatId, page, size);
+        List<UserDto> userDtos = new ArrayList<>();
+        for(User iter : users){
+            userDtos.add(new UserDto(iter));
+        }
+        return new ResponseEntity<List<UserDto>>(userDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserDto>> searchByParam(@RequestParam(required = false) String param) {
+        List<User> users = userService.searchByParam(param != null ? param : "");
+        List<UserDto> dto = new ArrayList<>();
+
+        for(User iter :users){
+            dto.add(new UserDto(iter));
+        }
+        return new ResponseEntity<List<UserDto>>(dto, HttpStatus.OK);
+    }
+
 
 
 }

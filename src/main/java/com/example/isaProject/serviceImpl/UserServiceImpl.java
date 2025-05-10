@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -196,6 +197,13 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public List<User> searchByParam(String searchTerm) {
+        List<User> users = userRepository.searchByParam(searchTerm);
+
+        return users;
     }
 
 }

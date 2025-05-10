@@ -157,7 +157,9 @@ public class GroupChatServiceImpl implements GroupChatService {
         return groupMessages;
     }
 
-   public List<GroupMessage> getGroupMessagesEfficientWay(Long groupId, Long loggedUserId) {
+
+
+    public List<GroupMessage> getGroupMessagesEfficientWay(Long groupId, Long loggedUserId) {
         GroupUser groupUser = groupUserRepository.findByUserIdGroupId(loggedUserId, groupId);
         if(groupUser == null){
             return null;
@@ -177,6 +179,13 @@ public class GroupChatServiceImpl implements GroupChatService {
     @Override
     public List<GroupUser> allGroupUser(Long userId) {
         return groupUserRepository.allGroupUser(userId);
+    }
+
+    //DOMACI
+    @Override
+    public List<User> findAllUsersInGroup(Long groupChatId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return groupUserRepository.findAllUsersInGroup(groupChatId, pageable);
     }
 
 }
