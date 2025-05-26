@@ -32,8 +32,9 @@ public class PostController {
     private CommentService commentService;
 
 
-    @PostMapping(consumes = "application/json")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto, Principal principal) {
+    @PostMapping(consumes = "multipart/form-data")
+    //@PreAuthorize("hasRole('OWNER')")
+    public ResponseEntity<PostDto> createPost(@ModelAttribute PostDto postDto, Principal principal) {
         User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
 
         Post post = postService.create(postDto, loggedUser);
@@ -46,8 +47,10 @@ public class PostController {
         return new ResponseEntity<PostDto>(dto, HttpStatus.OK);
 
     }
+
+
     @GetMapping
-    public ResponseEntity<List<PostDetailsDto>> displayAllPostByDesc(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<List<PostDetailsDto>> displayAllPostByDesc(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "30") int size) {
         List<PostDetailsDto> posts = postService.displayDetailedPosts(page, size);
         return new ResponseEntity<List<PostDetailsDto>>(posts, HttpStatus.OK);
     }

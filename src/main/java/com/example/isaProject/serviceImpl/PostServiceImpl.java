@@ -9,6 +9,7 @@ import com.example.isaProject.repository.LikeRepository;
 import com.example.isaProject.repository.PostRepository;
 import com.example.isaProject.repository.UserRepository;
 import com.example.isaProject.service.PostService;
+import com.example.isaProject.util.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,6 +40,9 @@ public class PostServiceImpl implements PostService {
     @Autowired
     private LikeRepository likeRepository;
 
+    @Autowired
+    private ImageUtil imageUtil;
+
 
 
     //dodati logiku slika
@@ -53,7 +58,12 @@ public class PostServiceImpl implements PostService {
         post.setCreatedAt(LocalDateTime.now());
 
         user.setNumberOfPosts(user.getNumberOfPosts() +1);
+        MultipartFile multipartFile = postDto.getBunnyImage();
+        if (multipartFile != null && !multipartFile.isEmpty()) {
+            String filePath = imageUtil.saveMultipartFileToFolder(multipartFile);
+            post.setBunnyImage(filePath);
 
+        }
 
         userRepository.save(user);
         postRepository.save(post);
@@ -140,7 +150,7 @@ public class PostServiceImpl implements PostService {
         }
 
         post.setDescription(updateRequest.getDescription());
-        post.setBunnyImage(updateRequest.getBunnyImage());
+        //post.setBunnyImage(updateRequest.getBunnyImage());
 
         postRepository.save(post);
         return post;

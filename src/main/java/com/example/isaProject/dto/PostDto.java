@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.time.LocalDateTime;
@@ -22,11 +23,11 @@ public class PostDto {
 
     private String description;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     private String username;
 
-    private String bunnyImage;
+    private MultipartFile bunnyImage;
 
     private int likes;
 
@@ -34,16 +35,14 @@ public class PostDto {
     public PostDto(Post post) {
         this.id= post.getId();
         this.description= post.getDescription();
-        this.createdAt = post.getCreatedAt();
+        this.createdAt = post.getCreatedAt().toString();
         this.username = post.getUser().getUsername();
-        this.bunnyImage = post.getBunnyImage();
         this.likes = post.getLikes();
     }
 
     public Post mapTo() {
         Post post = new Post();
         post.setDescription(description);
-        post.setBunnyImage(bunnyImage);
         return post;
     }
 

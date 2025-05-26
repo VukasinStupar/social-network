@@ -39,6 +39,16 @@ public class UserController {
         return this.userService.findById(userId);
     }
 
+    @GetMapping("userProfile/{userId}")
+    public ResponseEntity<UserProfileDto> userProfile(@PathVariable Long userId) {
+        User user = userService.findById(userId);
+        UserProfileDto updto = new UserProfileDto(user);
+
+        return new ResponseEntity<UserProfileDto>(updto, HttpStatus.OK);
+    }
+
+
+
     @GetMapping("/whoami")
     @PreAuthorize("hasRole('USER')")
     public User user(Principal user) {
@@ -53,8 +63,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ArrayList<UserDto>> getAll(@RequestParam(defaultValue = "1") int page,
-                                                     @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<ArrayList<UserDto>> getAll(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "30") int size) {
         List<User> user = userService.findAll(page, size);
 
         ArrayList<UserDto> dtos = new ArrayList<UserDto>();
