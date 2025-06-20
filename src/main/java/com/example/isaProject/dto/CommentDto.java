@@ -26,14 +26,14 @@ public class CommentDto {
 
     private String text;
 
-    private LocalDateTime commentCreation;
+    private String commentCreation;
 
     public CommentDto(Comment comment){
         this.id= comment.getId();
         this.userId= comment.getUser().getId();
         this.postId= comment.getPost().getId();
         this.text= comment.getText();
-        this.commentCreation= comment.getCommentCreation();
+        this.commentCreation= comment.getCommentCreation().toString();
     }
 
     public static List<CommentDto> convertListToDto(List<Comment> comments){

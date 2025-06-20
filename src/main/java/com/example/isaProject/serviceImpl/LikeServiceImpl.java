@@ -25,56 +25,39 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     private PostRepository postRepository;
 
-    public Like like(LikeDto likeDto, User loggedUser){
+
+    public Like like(LikeDto likeDto, User loggedUser) {
         User user = userRepository.findById(loggedUser.getId()).orElse(null);
-        if(user == null){
+        if (user == null) {
             return null;
         }
 
         Post post = postRepository.findById(likeDto.getPostId()).orElse(null);
-        if(post == null){
+        if (post == null) {
             return null;
         }
 
-        if(!likeRepository.findLikesByUserAndPost(user.getId(), post.getId()).isEmpty()){
-            return null;
+        Like existingLike = likeRepository.findLikesByUserAndPost(user.getId(), post.getId());
+
+        if (existingLike != null) {
+            likeRepository.deleteById(existingLike.getId());
+            post.setLikes(post.getLikes() - 1);
+            postRepository.save(post);
+            return existingLike;
         }
+
         Like like = new Like();
         like.setUser(user);
         like.setPost(post);
-
         likeRepository.save(like);
 
         post.setLikes(post.getLikes() + 1);
         postRepository.save(post);
 
-
         return like;
     }
 
-    public Like removeLike(LikeDto likeDto, User loggedUser){
-        User user = userRepository.findById(loggedUser.getId()).orElse(null);
-        if(user == null){
-            return null;
-        }
 
-        Post post = postRepository.findById(likeDto.getPostId()).orElse(null);
-        if(post == null){
-            return null;
-        }
 
-        List<Like> likes = likeRepository.findLikesByUserAndPost(user.getId(), post.getId());
-        if(likes.size() != 1){
-            return null;
-        }
-        Like like = likes.get(0);
-
-        likeRepository.deleteById(like.getId());
-
-        post.setLikes(post.getLikes() - 1);
-        postRepository.save(post);
-
-        return like;
-    }
 
 }

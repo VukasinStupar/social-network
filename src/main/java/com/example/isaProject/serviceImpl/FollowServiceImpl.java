@@ -8,9 +8,12 @@ import com.example.isaProject.repository.MessageRepository;
 import com.example.isaProject.repository.UserRepository;
 import com.example.isaProject.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class FollowServiceImpl implements FollowService {
@@ -85,4 +88,15 @@ public class FollowServiceImpl implements FollowService {
         followRepository.delete(existingFollow);
     }
 
+    @Override
+    public List<User> allFollowersOfUser2(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return followRepository.allFollowersOfUser2(userId, pageable);
+    }
+
+    @Override
+    public List<User> allFollowOfUser2(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return followRepository.allFollowOfUser2(userId, pageable);
+    }
 }

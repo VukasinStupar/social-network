@@ -14,6 +14,8 @@ public interface CommentService {
 
     ApplicationAnalyticsDTO applicationAnalytics();
 
+    List<Comment> commentByPost(Long postId);
+
 
 
 }

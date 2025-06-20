@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
+
     @Query("SELECT l FROM Like l WHERE l.user.id = :userId and l.post.id = :postId")
-    List<Like> findLikesByUserAndPost(@Param("userId") Long userId, @Param("postId") Long postId);
+    Like findLikesByUserAndPost(@Param("userId") Long userId, @Param("postId") Long postId);
 
 
     @Modifying

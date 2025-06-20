@@ -2,6 +2,8 @@ package com.example.isaProject.controller;
 
 import com.example.isaProject.dto.FollowDto;
 import com.example.isaProject.dto.PostDto;
+import com.example.isaProject.dto.UserDto;
+import com.example.isaProject.dto.UserProfileDto;
 import com.example.isaProject.model.Follow;
 import com.example.isaProject.model.User;
 import com.example.isaProject.securityAuth.TokenBasedAuthentication;
@@ -17,6 +19,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/follows", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -41,5 +44,33 @@ public class FollowController {
         User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
         followService.unFollow(loggedUser, followeeId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //zavrsti
+
+    @GetMapping("/folowers")
+    public ResponseEntity<List<UserProfileDto>> followers(@RequestParam Long userId,
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "30") int size) {
+
+        List<User> followers = followService.allFollowersOfUser2(userId, page, size);
+        List<UserProfileDto> followersDto = new ArrayList<>();
+        for(User iter : followers){
+            followersDto.add(new UserProfileDto(iter));
+        }
+        return new ResponseEntity<List<UserProfileDto>>(followersDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/folowee")
+    public ResponseEntity<List<UserProfileDto>> folowee(@RequestParam Long userId,
+                                                                      @RequestParam(defaultValue = "0") int page,
+                                                                      @RequestParam(defaultValue = "30") int size) {
+
+        List<User> followers = followService.allFollowOfUser2(userId, page, size);
+        List<UserProfileDto> followersDto = new ArrayList<>();
+        for(User iter : followers){
+            followersDto.add(new UserProfileDto(iter));
+        }
+        return new ResponseEntity<List<UserProfileDto>>(followersDto, HttpStatus.OK);
     }
 }

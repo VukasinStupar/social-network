@@ -16,10 +16,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query("SELECT (COUNT(c) <= 60) FROM Comment c WHERE c.user.id = :userId AND c.commentCreation >= :oneHourAgo")
     boolean canUserComment(@Param("userId") Long userId, @Param("oneHourAgo") LocalDateTime oneHourAgo);
 
-    @Query("SELECT c FROM Comment c WHERE c.post.id = :postId ORDER BY c.commentCreation DESC")
+    @Query("SELECT C FROM Comment C WHERE C.post.id = :postId ORDER BY C.commentCreation DESC")
     List<Comment> commentByPost( @Param("postId") Long postId);
 
-    //domaci
     @Query("SELECT COUNT(c) FROM Comment c WHERE c.commentCreation >= :time")
     Long countCommentByData(@Param("time") LocalDateTime time);
 

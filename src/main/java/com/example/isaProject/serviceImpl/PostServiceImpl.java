@@ -175,7 +175,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDetailsDto displayPostById(Long postId){
         Post post = postRepository.findPostById(postId);
-
+        if(post == null){
+            return null;
+        }
 
         List<Comment> comments = commentRepository.commentByPost(post.getId());
         List<CommentDto> commentDto = CommentDto.convertListToDto(comments);

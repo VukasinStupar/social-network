@@ -36,15 +36,5 @@ public class LikeController {
         return new ResponseEntity<LikeDto>(dto, HttpStatus.OK);
     }
 
-    @PostMapping("/removeLike")
-    public ResponseEntity<LikeDto> removeLike(@RequestBody LikeDto likeDto, Principal principal){
-        User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
-        Like like = likeService.removeLike(likeDto, loggedUser);
-        if(like == null){
-            return new ResponseEntity<LikeDto>(HttpStatus.BAD_REQUEST);
-        }
-        LikeDto dto = new LikeDto(like);
 
-        return new ResponseEntity<LikeDto>(dto, HttpStatus.OK);
-    }
 }

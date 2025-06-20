@@ -2,6 +2,7 @@ package com.example.isaProject.repository;
 
 import com.example.isaProject.model.Follow;
 import com.example.isaProject.model.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -50,6 +51,13 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     @Query("SELECT COUNT(f.followee) FROM Follow f WHERE f.follower.id = :userId")
     Long countFollowersOfUser(@Param("userId") Long userId);
+
+    @Query("SELECT f.follower FROM Follow f WHERE f.followee.id = :userId")
+    List<User> allFollowersOfUser2(@Param("userId") Long userId, Pageable pageable);
+
+    //domaci pratioci od usera
+    @Query("SELECT f.followee FROM Follow f WHERE f.follower.id = :userId")
+    List<User> allFollowOfUser2(@Param("userId") Long userId, Pageable pageable);
 
 
 }

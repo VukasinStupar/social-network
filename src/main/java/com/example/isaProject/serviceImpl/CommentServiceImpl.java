@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
         Long followeeId = post.getUser().getId();
 
         if(!followRepository.existsByFollowerIdAndFolloweeId(user.getId(), followeeId)){
-            return null;
+            //return null;
         }
         LocalDateTime time = LocalDateTime.now().minusHours(1);
         //domaci
@@ -106,6 +106,10 @@ public class CommentServiceImpl implements CommentService {
         return aaDto;
     }
 
+    @Override
+    public List<Comment> commentByPost(Long postId) {
+        return commentRepository.commentByPost(postId);
+    }
 
 
 }

@@ -27,7 +27,7 @@ public class GroupMessageDto {
 
     private String text;
 
-    private LocalDateTime sendTime;
+    private String sendTime;
 
     public GroupMessageDto(GroupMessage groupMessage){
         this.id = groupMessage.getId();
@@ -35,6 +35,6 @@ public class GroupMessageDto {
         this.senderId = groupMessage.getSender().getId();
         this.senderUsername = groupMessage.getSender().getUsername();
         this.text = groupMessage.getText();
-        this.sendTime = groupMessage.getSendTime();
+        this.sendTime = groupMessage.getSendTime().toString();
     }
 }

@@ -14,10 +14,10 @@ INSERT INTO ROLES (user_id, role_id) VALUES (4, 2);
 INSERT INTO ROLES (user_id, role_id) VALUES (5, 1);
 
 INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 1','2017-10-01 21:58','slika1',1, 0);
-INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 2','2017-10-01 21:58','slika2',2, 0);
-INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 3','2017-10-01 21:58','slika3',3, 0);
-INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 4','2017-10-01 21:58','slika4',4, 0);
-INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 5','2017-10-01 21:58','slika5',5, 0);
+INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 2','2017-10-02 21:58','slika2',2, 0);
+INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 3','2017-10-03 21:58','slika3',3, 0);
+INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 4','2017-10-04 21:58','slika4',4, 0);
+INSERT INTO Post (description, created_at, bunny_image, user_id, likes) VALUES ('objava 5','2017-10-05 21:58','slika5',5, 0);
 
 INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (1,2,'test1','2017-10-01 21:58:58.508-07');
 INSERT INTO Message (sender_id, recipient_id, text, send_time) VALUES (1,2,'test2','2017-10-01 21:58:58.508-07');
@@ -45,3 +45,20 @@ INSERT INTO group_user (user_id, group_chat_id, added_at) VALUES (3, 1, '2024-04
 
 INSERT INTO group_message (group_chat_id, sender_id, text, send_time) VALUES (1, 1, 'Hello, this is Mare!', '2024-04-13 15:25:00');
 INSERT INTO group_message (group_chat_id, sender_id, text, send_time) VALUES (1, 2, 'Hello, this is Pera!', '2024-04-13 15:25:00');
+
+INSERT INTO comment (user_id, post_id, text, comment_creation) VALUES (1, 2, 'This is a sample comment text.', '2025-05-25 14:30:00');
+INSERT INTO comment (user_id, post_id, text, comment_creation) VALUES (1, 3, 'This is a sample comment text.', '2025-06-25 14:30:00');
+INSERT INTO comment (user_id, post_id, text, comment_creation) VALUES (1, 4, 'This is a sample comment text.', '2025-07-25 14:30:00');
+INSERT INTO comment (user_id, post_id, text, comment_creation) VALUES (1, 5, 'This is a sample comment text.', '2025-08-25 14:30:00');
+INSERT INTO comment (user_id, post_id, text, comment_creation) VALUES (1, 2, 'This is a sample comment text.', '2025-09-25 14:30:00');
+
+
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 2, '2025-06-10T12:00:00');
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 3, '2025-06-10T12:00:00');
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 4, '2025-06-10T12:00:00');
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 5, '2025-06-10T12:00:00');
+
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (2, 1, '2025-06-10T12:00:00');
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (3, 1, '2025-06-10T12:00:00');
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (4, 1, '2025-06-10T12:00:00');
+INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (5, 1, '2025-06-10T12:00:00');

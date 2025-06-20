@@ -22,14 +22,14 @@ public class PostDetailsDto {
     private String bunnyImage;
     private int likes;
     private List<CommentDto> comments;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private String username;
 
 
     public PostDetailsDto(Post post, List<CommentDto> commentsDto) {
         this.id = post.getId();
         this.description = post.getDescription();
-        this.createdAt = post.getCreatedAt();
+        this.createdAt = post.getCreatedAt().toString();
         this.username = post.getUser().getUsername();
         this.bunnyImage = post.getBunnyImage();
         this.likes = post.getLikes();

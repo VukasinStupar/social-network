@@ -11,5 +11,5 @@ public interface LikeService {
 
     public Like like(LikeDto likeDto, User loggedUser);
 
-    public Like removeLike(LikeDto likeDto, User loggedUser);
+
 }
