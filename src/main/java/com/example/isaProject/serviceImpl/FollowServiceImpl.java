@@ -37,8 +37,9 @@ public class FollowServiceImpl implements FollowService {
             return null;
         }
 
-        if (followRepository.existsByFollowerIdAndFolloweeId(user.getId(), followeeId)) {
-            return null; // Return null if already following
+        Follow existingFollow = followRepository.findByFollowerIdAndFolloweeId(user.getId(), followeeId);
+        if (existingFollow != null) {
+            return null; // Already following
         }
 
         LocalDateTime oneMinuteAgo = LocalDateTime.now().minusMinutes(1);
@@ -51,7 +52,7 @@ public class FollowServiceImpl implements FollowService {
         Follow follow = new Follow();
         follow.setFollower(user);
         follow.setFollowee(followee);
-        follow.setFollowCreation(LocalDateTime.now()); // Set the follow creation time
+        follow.setFollowCreation(LocalDateTime.now());
 
         user.setNumberOfFollowees(user.getNumberOfFollowees() + 1);
         followee.setNumberOfFollowers(followee.getNumberOfFollowers() + 1);
@@ -68,16 +69,16 @@ public class FollowServiceImpl implements FollowService {
     public void unFollow(User loggedUser, Long followeeId) {
         User user = userRepository.findById(loggedUser.getId()).orElse(null);
         if (user == null) {
-            return ;
+            return;
         }
 
         User followee = userRepository.findById(followeeId).orElse(null);
         if (followee == null) {
-            return ;
+            return;
         }
         Follow existingFollow = followRepository.findByFollowerIdAndFolloweeId(user.getId(), followeeId);
         if (existingFollow == null) {
-            return ;
+            return;
         }
         user.setNumberOfFollowees(user.getNumberOfFollowees() - 1);
         followee.setNumberOfFollowers(followee.getNumberOfFollowers() - 1);
@@ -99,4 +100,12 @@ public class FollowServiceImpl implements FollowService {
         Pageable pageable = PageRequest.of(page, size);
         return followRepository.allFollowOfUser2(userId, pageable);
     }
+
+    @Override
+    public boolean existsByFollowerIdAndFolloweeId(Long followerId, Long followeeId) {
+        return followRepository.existsByFollowerIdAndFolloweeId(followerId, followeeId);
+    }
+
+
+
 }

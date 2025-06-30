@@ -14,9 +14,13 @@ import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-    @Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END " +
-            "FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
+    //@Query("SELECT CASE WHEN COUNT(f) > 0 THEN true ELSE false END " +
+      //      "FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
+    //boolean existsByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);
+
+    @Query("SELECT COUNT(f) > 0 FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
     boolean existsByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);
+
 
     @Query("SELECT f FROM Follow f WHERE f.follower.id = :followerId AND f.followee.id = :followeeId")
     Follow findByFollowerIdAndFolloweeId(@Param("followerId") Long followerId, @Param("followeeId") Long followeeId);

@@ -107,7 +107,6 @@ public class PostController {
             return new ResponseEntity<PostDetailsDto>(HttpStatus.BAD_REQUEST);
         }
 
-
         return new ResponseEntity<PostDetailsDto>(postDetailsDto, HttpStatus.OK);
     }
 

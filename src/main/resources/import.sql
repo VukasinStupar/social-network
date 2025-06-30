@@ -53,12 +53,4 @@ INSERT INTO comment (user_id, post_id, text, comment_creation) VALUES (1, 5, 'Th
 INSERT INTO comment (user_id, post_id, text, comment_creation) VALUES (1, 2, 'This is a sample comment text.', '2025-09-25 14:30:00');
 
 
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 2, '2025-06-10T12:00:00');
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 3, '2025-06-10T12:00:00');
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 4, '2025-06-10T12:00:00');
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (1, 5, '2025-06-10T12:00:00');
 
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (2, 1, '2025-06-10T12:00:00');
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (3, 1, '2025-06-10T12:00:00');
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (4, 1, '2025-06-10T12:00:00');
-INSERT INTO follow (follower_id, followee_id, follow_creation) VALUES (5, 1, '2025-06-10T12:00:00');

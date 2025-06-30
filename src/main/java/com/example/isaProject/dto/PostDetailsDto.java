@@ -24,6 +24,8 @@ public class PostDetailsDto {
     private List<CommentDto> comments;
     private String createdAt;
     private String username;
+    private Long userId;
+
 
 
     public PostDetailsDto(Post post, List<CommentDto> commentsDto) {
@@ -34,6 +36,8 @@ public class PostDetailsDto {
         this.bunnyImage = post.getBunnyImage();
         this.likes = post.getLikes();
         this.comments = commentsDto;
+        this.userId = post.getUser().getId();
+
     }
 
 }

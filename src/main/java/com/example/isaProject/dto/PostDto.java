@@ -31,6 +31,9 @@ public class PostDto {
 
     private int likes;
 
+    private Long userId;
+
+
 
     public PostDto(Post post) {
         this.id= post.getId();
@@ -38,6 +41,7 @@ public class PostDto {
         this.createdAt = post.getCreatedAt().toString();
         this.username = post.getUser().getUsername();
         this.likes = post.getLikes();
+        this.userId = post.getUser().getId();
     }
 
     public Post mapTo() {

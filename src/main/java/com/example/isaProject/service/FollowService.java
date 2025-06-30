@@ -18,4 +18,6 @@ public interface FollowService {
     List<User> allFollowersOfUser2(Long userId, int page, int size);
 
     List<User> allFollowOfUser2(Long userId, int page, int size);
+
+    boolean existsByFollowerIdAndFolloweeId(Long followerId, Long followeeId);
 }

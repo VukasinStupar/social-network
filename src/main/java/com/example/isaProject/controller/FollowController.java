@@ -1,9 +1,6 @@
 package com.example.isaProject.controller;
 
-import com.example.isaProject.dto.FollowDto;
-import com.example.isaProject.dto.PostDto;
-import com.example.isaProject.dto.UserDto;
-import com.example.isaProject.dto.UserProfileDto;
+import com.example.isaProject.dto.*;
 import com.example.isaProject.model.Follow;
 import com.example.isaProject.model.User;
 import com.example.isaProject.securityAuth.TokenBasedAuthentication;
@@ -39,7 +36,7 @@ public class FollowController {
         return new ResponseEntity<FollowDto>(dto, HttpStatus.OK);
     }
 
-    @PutMapping("removeFollow/{followeeId}")
+    @PutMapping("/removeFollow/{followeeId}")
     public ResponseEntity<?> deleteFollow(@PathVariable Long followeeId, Principal principal){
         User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
         followService.unFollow(loggedUser, followeeId);
@@ -73,4 +70,15 @@ public class FollowController {
         }
         return new ResponseEntity<List<UserProfileDto>>(followersDto, HttpStatus.OK);
     }
+
+    @GetMapping("/isFollowing/{followeeId}")
+    public ResponseEntity<FollowingResponse> isFollowing(@PathVariable Long followeeId, Principal principal) {
+        User loggedUser = (User) ((TokenBasedAuthentication) principal).getPrincipal();
+        boolean follows = followService.existsByFollowerIdAndFolloweeId(loggedUser.getId(), followeeId);
+
+        FollowingResponse followingResponse = new FollowingResponse(follows);
+
+        return new ResponseEntity<FollowingResponse>(followingResponse, HttpStatus.OK);
+    }
+
 }
