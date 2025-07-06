@@ -26,6 +26,8 @@ import java.util.UUID;
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
 
+
+
     @Autowired
     private TokenUtils tokenUtils;
 
