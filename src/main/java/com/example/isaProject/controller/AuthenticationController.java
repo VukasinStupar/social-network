@@ -58,6 +58,8 @@ public class AuthenticationController {
         if(!user.isEnabled()) {
             return new ResponseEntity<UserTokenState>(HttpStatus.BAD_REQUEST);
         }
+
+
         userService.setLastLogin(user.getId());
 
         String jwt = tokenUtils.generateToken(user.getUsername());
