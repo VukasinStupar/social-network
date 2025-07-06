@@ -30,3 +30,6 @@ public class GroupChat {
     private LocalDateTime createTime;
 
 }
+
+
+
